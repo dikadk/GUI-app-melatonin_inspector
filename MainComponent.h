@@ -5,6 +5,7 @@
 // have called `juce_generate_juce_header(<thisTarget>)` in your CMakeLists.txt,
 // you could `#include <JuceHeader.h>` here instead, to make all your module headers visible.
 #include <juce_gui_extra/juce_gui_extra.h>
+#include "melatonin_inspector/melatonin_inspector.h"
 
 //==============================================================================
 /*
@@ -24,6 +25,7 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
+    melatonin::Inspector inspector { *this };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

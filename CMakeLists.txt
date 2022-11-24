@@ -17,11 +17,13 @@ cmake_minimum_required(VERSION 3.15)
 
 project(GUI_APP_EXAMPLE VERSION 0.0.1)
 
+set(CMAKE_CXX_STANDARD 14)
+
 # If you've installed JUCE somehow (via a package manager, or directly using the CMake install
 # target), you'll need to tell this project that it depends on the installed copy of JUCE. If you've
 # included JUCE directly in your source tree (perhaps as a submodule), you'll need to tell CMake to
 # include that subdirectory as part of the build.
-add_subdirectory(JUCE)
+add_subdirectory(modules/JUCE)
 
 # find_package(JUCE CONFIG REQUIRED)        # If you've installed JUCE to your system
 # or
@@ -36,6 +38,7 @@ add_subdirectory(JUCE)
 # (GuiAppExample here). This target is a normal CMake target, but has a lot of extra properties set
 # up by default. This function accepts many optional arguments. Check the readme at
 # `docs/CMake API.md` in the JUCE repo for the full list.
+juce_add_module("modules/melatonin_inspector")
 
 juce_add_gui_app(GuiAppExample
     # VERSION ...                       # Set this if the app version is different to the project version
@@ -62,6 +65,8 @@ target_sources(GuiAppExample
     PRIVATE
         Main.cpp
         MainComponent.cpp)
+
+target_link_libraries("GuiAppExample" PRIVATE melatonin_inspector)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
 # project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use
@@ -97,6 +102,7 @@ target_link_libraries(GuiAppExample
     PRIVATE
         # GuiAppData            # If we'd created a binary data target, we'd link to it here
         juce::juce_gui_extra
+        juce::juce_audio_processors
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
