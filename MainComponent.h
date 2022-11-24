@@ -8,24 +8,71 @@
 #include "melatonin_inspector/melatonin_inspector.h"
 
 //==============================================================================
+struct SampleLnF: juce::LookAndFeel_V4{
+    SampleLnF(){
+        setColour(juce::ResizableWindow::backgroundColourId, juce::Colours::crimson);
+    }
+};
+
+struct PanelComp: juce::Component{
+
+    PanelComp(juce::String name): juce::Component(name){
+        setLookAndFeel(&lnf);
+    }
+
+    void paint(juce::Graphics &g) override {
+        g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+    }
+
+    SampleLnF lnf;
+};
+
+struct MultiplePanelComponent : juce::Component {
+    MultiplePanelComponent() {
+        auto compNames = {"Left","Center","Right"};
+        for(auto s: compNames){
+            auto c = new PanelComp(s);
+
+            comps.push_back(c);
+            addAndMakeVisible(c);
+        }
+    }
+
+    void resized() override {
+        auto r = getLocalBounds();
+
+        comps[0]->setBounds(r.removeFromLeft(getWidth() / 3));
+        r.removeFromLeft(20);
+        comps[1]->setBounds(r.removeFromLeft(getWidth() / 3));
+        r.removeFromLeft(50);
+        comps[2]->setBounds(r);
+    }
+
+    std::vector<juce::Component*> comps;
+};
+
 /*
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent   : public juce::Component
-{
+class MainComponent : public juce::Component {
 public:
     //==============================================================================
     MainComponent();
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics &) override;
+
     void resized() override;
 
 private:
     //==============================================================================
     // Your private member variables go here...
-    melatonin::Inspector inspector { *this };
+    melatonin::Inspector inspector{*this};
+
+    MultiplePanelComponent multiplePanelComponent;
+    juce::TextButton btn1{"Button1"};
+    juce::Slider slider1{"SliderOne"};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
