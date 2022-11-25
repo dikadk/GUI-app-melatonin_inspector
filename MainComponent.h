@@ -6,6 +6,7 @@
 // you could `#include <JuceHeader.h>` here instead, to make all your module headers visible.
 #include <juce_gui_extra/juce_gui_extra.h>
 #include "melatonin_inspector/melatonin_inspector.h"
+#include "PaddedComponent.h"
 
 //==============================================================================
 struct SampleLnF: juce::LookAndFeel_V4{
@@ -73,6 +74,8 @@ private:
     MultiplePanelComponent multiplePanelComponent;
     juce::TextButton btn1{"Button1"};
     juce::Slider slider1{"SliderOne"};
+
+    PaddedComponent paddedComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

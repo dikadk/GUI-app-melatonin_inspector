@@ -9,6 +9,7 @@ MainComponent::MainComponent()
     addAndMakeVisible(multiplePanelComponent);
     addAndMakeVisible(btn1);
     addAndMakeVisible(slider1);
+    addAndMakeVisible(paddedComponent);
 }
 
 //==============================================================================
@@ -30,5 +31,6 @@ void MainComponent::resized()
 
     multiplePanelComponent.setBounds(getLocalBounds());
     btn1.setBounds({60, 80, 100, 60});
-    slider1.setBounds({50, 120, 160, 160});
+    slider1.setBounds({50, 150, 160, 160});
+    paddedComponent.setBoundsAndPadding({300, 100, 150, 220}, 24, 32);
 }
