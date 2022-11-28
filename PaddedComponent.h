@@ -118,7 +118,7 @@ public:
 
     juce::Rectangle<int> getContentBounds()
     {
-        restorePaddingsInProperties();
+      restorePaddingsFromProperties();
 
         auto bounds = getLocalBounds();
         auto newWidth = bounds.getWidth() - paddingLeft - paddingRight;
@@ -156,7 +156,7 @@ private:
         props.set ("paddingBottom", paddingBottom);
     }
 
-    void restorePaddingsInProperties()
+    void restorePaddingsFromProperties()
     {
         auto& props = getProperties();
         paddingLeft = props.getWithDefault("paddingLeft", paddingLeft);
