@@ -17,7 +17,7 @@ struct SampleLnF: juce::LookAndFeel_V4{
 
 struct PanelComp: juce::Component{
 
-    PanelComp(juce::String name): juce::Component(name){
+    PanelComp(const juce::String& name): juce::Component(name){
         setLookAndFeel(&lnf);
     }
 
@@ -26,6 +26,15 @@ struct PanelComp: juce::Component{
     }
 
     SampleLnF lnf;
+};
+
+struct CustomComponent: juce::Component{
+    CustomComponent(const juce::String& name): juce::Component(name){
+    }
+
+    void paint(juce::Graphics &g) override {
+        g.fillAll(juce::Colours::goldenrod);
+    }
 };
 
 struct MultiplePanelComponent : juce::Component {
@@ -74,6 +83,8 @@ private:
     MultiplePanelComponent multiplePanelComponent;
     juce::TextButton btn1{"Button1"};
     juce::Slider slider1{"SliderOne"};
+
+    std::vector<CustomComponent*> components;
 
     PaddedComponent paddedComponent;
 

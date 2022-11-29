@@ -3,13 +3,20 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    setSize (600, 400);
-    inspector.setVisible(true);
-
     addAndMakeVisible(multiplePanelComponent);
     addAndMakeVisible(btn1);
     addAndMakeVisible(slider1);
     addAndMakeVisible(paddedComponent);
+
+    for(int i = 0; i< 40; i++){
+        auto c = new CustomComponent(juce::String(i));
+        components.push_back(c);
+
+        addAndMakeVisible(c);
+    }
+
+    setSize (600, 400);
+    inspector.setVisible(true);
 }
 
 //==============================================================================
@@ -33,6 +40,14 @@ void MainComponent::resized()
     btn1.setBounds({60, 80, 100, 60});
     slider1.setBounds({50, 150, 160, 160});
     paddedComponent.setBoundsAndPadding({300, 100, 150, 220}, 24, 32, 0 , 100);
+
+    int i = 1;
+    int offset = 2;
+    for(auto c: components){
+        c->setBounds({50, offset + i * 25, 20, 20});
+        i++;
+    }
+
 
     auto& props = btn1.getProperties();
     props.set ("paddingLeft", 12);
