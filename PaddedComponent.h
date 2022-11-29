@@ -61,20 +61,15 @@ public:
     // Achtung: JUCE is NOT like CSS padding, goes left, top, right, bottom
     void setBoundsAndPadding (juce::Rectangle<int> bounds, int l, int t, int r, int b)
     {
-        paddingLeft = l;
-        paddingTop = t;
-        paddingRight = r;
-        paddingBottom = b;
         setBounds (bounds.getX() - l, bounds.getY() - t, bounds.getWidth() + l + r, bounds.getHeight() + t + b);
-        storePaddingsInProperties();
+
+        storePaddingsInProperties (l, t, r, b);
     }
 
     void setBoundsAndPadding (juce::Rectangle<int> newBounds, int newPaddingX, int newPaddingY)
     {
-        paddingLeft = paddingRight = newPaddingX;
-        paddingTop = paddingBottom = newPaddingY;
         setBounds (newBounds.expanded (newPaddingX, newPaddingY));
-        storePaddingsInProperties();
+        storePaddingsInProperties (newPaddingX, newPaddingY, newPaddingX, newPaddingY);
     }
 
     void setBoundsAndPadding (juce::Rectangle<int> newBounds, int newPadding)
@@ -89,10 +84,8 @@ public:
      */
     void setBoundsReducedByPadding (juce::Rectangle<int> newBounds, int newPaddingX, int newPaddingY)
     {
-        paddingLeft = paddingRight = newPaddingX;
-        paddingTop = paddingBottom = newPaddingY;
         setBounds (newBounds);
-        storePaddingsInProperties();
+        storePaddingsInProperties (newPaddingX, newPaddingY, newPaddingX, newPaddingY);
     }
 
     void setBoundsReducedByPadding (juce::Rectangle<int> newBounds, int newPadding)
@@ -103,22 +96,27 @@ public:
     // Achtung: This is NOT like CSS padding...
     void setBoundsReducedByPadding (juce::Rectangle<int> newBounds, int l, int t, int r, int b)
     {
-        paddingLeft = l;
-        paddingTop = t;
-        paddingRight = r;
-        paddingBottom = b;
         setBounds (newBounds);
-        storePaddingsInProperties();
+        storePaddingsInProperties (l, t, r, b);
     }
 
     int getContentWidth()
     {
+        auto& props = getProperties();
+
+        int paddingLeft = props.getWithDefault (paddingLeftID, 0);
+        int paddingRight = props.getWithDefault (paddingRightID, 0);
+
         return getWidth() - paddingLeft - paddingRight;
     }
 
     juce::Rectangle<int> getContentBounds()
     {
-      restorePaddingsFromProperties();
+        auto& props = getProperties();
+        int paddingLeft = props.getWithDefault (paddingLeftID, 0);
+        int paddingTop = props.getWithDefault (paddingTopID, 0);
+        int paddingRight = props.getWithDefault (paddingRightID, 0);
+        int paddingBottom = props.getWithDefault (paddingBottomID, 0);
 
         auto bounds = getLocalBounds();
         auto newWidth = bounds.getWidth() - paddingLeft - paddingRight;
@@ -136,32 +134,30 @@ public:
     juce::Rectangle<int> getContentBoundsInParent()
     {
         auto p = getBoundsInParent();
+
+        auto& props = getProperties();
+        int paddingLeft = props.getWithDefault (paddingLeftID, 0);
+        int paddingTop = props.getWithDefault (paddingTopID, 0);
+        int paddingRight = props.getWithDefault (paddingRightID, 0);
+        int paddingBottom = props.getWithDefault (paddingBottomID, 0);
+
         return { p.getX() + paddingLeft, p.getY() + paddingTop, p.getWidth() - paddingLeft - paddingRight, p.getHeight() - paddingTop - paddingBottom };
     }
 
-    int paddingLeft = 0;
-    int paddingTop = 0;
-    int paddingRight = 0;
-    int paddingBottom = 0;
+    const juce::String paddingTopID = "paddingTop";
+    const juce::String paddingBottomID = "paddingBottom";
+    const juce::String paddingLeftID = "paddingLeft";
+    const juce::String paddingRightID = "paddingRight";
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PaddedComponent)
 
-    void storePaddingsInProperties()
+    void storePaddingsInProperties (int paddingLeft, int paddingTop, int paddingRight, int paddingBottom)
     {
         auto& props = getProperties();
-        props.set ("paddingLeft", paddingLeft);
-        props.set ("paddingTop", paddingTop);
-        props.set ("paddingRight", paddingRight);
-        props.set ("paddingBottom", paddingBottom);
-    }
-
-    void restorePaddingsFromProperties()
-    {
-        auto& props = getProperties();
-        paddingLeft = props.getWithDefault("paddingLeft", paddingLeft);
-        paddingTop = props.getWithDefault("paddingTop", paddingTop);
-        paddingRight = props.getWithDefault("paddingRight", paddingRight);
-        paddingBottom = props.getWithDefault("paddingBottom", paddingBottom);
+        props.set (paddingTopID, paddingTop);
+        props.set (paddingBottomID, paddingBottom);
+        props.set (paddingLeftID, paddingLeft);
+        props.set (paddingRightID, paddingRight);
     }
 };
