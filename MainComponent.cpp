@@ -32,5 +32,8 @@ void MainComponent::resized()
     multiplePanelComponent.setBounds(getLocalBounds());
     btn1.setBounds({60, 80, 100, 60});
     slider1.setBounds({50, 150, 160, 160});
-    paddedComponent.setBoundsAndPadding({300, 100, 150, 220}, 24, 32);
+    paddedComponent.setBoundsAndPadding({300, 100, 150, 220}, 24, 32, 0 , 100);
+
+    auto& props = btn1.getProperties();
+    props.set ("paddingLeft", 12);
 }
