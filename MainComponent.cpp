@@ -10,12 +10,12 @@ MainComponent::MainComponent()
 
     for(int i = 0; i< 40; i++){
         auto c = new CustomComponent(juce::String(i));
-        components.push_back(c);
+        components.add(c);
 
         addAndMakeVisible(c);
     }
 
-    setSize (600, 400);
+    setSize (600, 800);
     inspector.setVisible(true);
 }
 

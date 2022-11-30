@@ -21,6 +21,10 @@ struct PanelComp: juce::Component{
         setLookAndFeel(&lnf);
     }
 
+    ~PanelComp(){
+        setLookAndFeel(nullptr);
+    }
+
     void paint(juce::Graphics &g) override {
         g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
     }
@@ -43,7 +47,7 @@ struct MultiplePanelComponent : juce::Component {
         for(auto s: compNames){
             auto c = new PanelComp(s);
 
-            comps.push_back(c);
+            comps.add(c);
             addAndMakeVisible(c);
         }
     }
@@ -51,14 +55,15 @@ struct MultiplePanelComponent : juce::Component {
     void resized() override {
         auto r = getLocalBounds();
 
-        comps[0]->setBounds(r.removeFromLeft(getWidth() / 3));
+        //comps[0]->setBounds();
+        r.removeFromLeft(getWidth() / 3);
         r.removeFromLeft(20);
         comps[1]->setBounds(r.removeFromLeft(getWidth() / 3));
         r.removeFromLeft(50);
         comps[2]->setBounds(r);
     }
 
-    std::vector<juce::Component*> comps;
+    juce::OwnedArray<juce::Component> comps;
 };
 
 /*
@@ -84,7 +89,7 @@ private:
     juce::TextButton btn1{"Button1"};
     juce::Slider slider1{"SliderOne"};
 
-    std::vector<CustomComponent*> components;
+    juce::OwnedArray<CustomComponent> components;
 
     PaddedComponent paddedComponent;
 
