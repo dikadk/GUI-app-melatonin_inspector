@@ -30,12 +30,12 @@ namespace juce
 
 struct PanelComp : juce::Component
 {
-    PanelComp (const juce::String& name) : juce::Component (name)
+    explicit PanelComp (const juce::String& name) : juce::Component (name)
     {
         setLookAndFeel (&lnf);
     }
 
-    ~PanelComp()
+    ~PanelComp() override
     {
         setLookAndFeel (nullptr);
     }
@@ -113,7 +113,7 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-    melatonin::Inspector inspector { *this, false };
+    melatonin::Inspector inspector { *this};
 
     MultiplePanelComponent multiplePanelComponent;
     juce::TextButton btn1 { "Button1" };
