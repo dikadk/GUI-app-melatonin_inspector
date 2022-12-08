@@ -113,7 +113,7 @@ public:
 private:
     //==============================================================================
     // Your private member variables go here...
-    melatonin::Inspector inspector { *this};
+    melatonin::Inspector inspector { *this, false};
 
     MultiplePanelComponent multiplePanelComponent;
     juce::TextButton btn1 { "Button1" };
