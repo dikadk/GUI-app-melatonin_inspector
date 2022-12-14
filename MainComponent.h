@@ -13,7 +13,7 @@ struct SampleLnF : juce::LookAndFeel_V4
 {
     SampleLnF()
     {
-        setColour (juce::ResizableWindow::backgroundColourId, juce::Colours::crimson);
+        setColour (juce::ResizableWindow::backgroundColourId, juce::Colours::lightsalmon);
     }
 };
 
@@ -57,7 +57,7 @@ struct CustomComponent : juce::Component
     }
 
     void paint(juce::Graphics &g) override {
-        g.fillAll(juce::Colours::goldenrod);
+        g.fillAll(juce::Colours::lightcoral);
     }
 };
 
@@ -74,7 +74,7 @@ struct MultiplePanelComponent : juce::Component
             addAndMakeVisible (c);
         }
 
-        comps[0]->getProperties().set ("Color", juce::VariantConverter<juce::Colour>::toVar (juce::Colours::darkolivegreen));
+        comps[0]->getProperties().set ("Color", juce::VariantConverter<juce::Colour>::toVar (juce::Colours::lightgrey));
         comps[0]->setOpaque(true);
 
         comps[1]->setBufferedToImage(true);
